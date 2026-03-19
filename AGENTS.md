@@ -3,22 +3,27 @@ Always respond in Chinese-simplified
 Any changes at the design level must be synchronized to the design documentation.
 
 ## Project Structure & Module Organization
-This repository is currently empty aside from this guide. As code is added, keep the layout simple and predictable:
+This repository now contains a working Python CLI prototype. Keep the layout simple and predictable:
 
-- `src/` for application code
+- `src/youtubesummary/` for application code
 - `tests/` for automated tests
 - `assets/` for static files such as images or sample data
-- `docs/` for design notes, architecture decisions, or usage guides
+- `docs/` for design notes, architecture decisions, or usage guides when added
+- `design.md` for the active design baseline
+- `yt_asr_summary.py` as the top-level compatibility entry script
+- `downloads/` for generated media, reports, and transcripts only
 
 Prefer feature-oriented subdirectories inside `src/` (for example, `src/capture/` or `src/export/`) rather than a single flat folder.
 
 ## Build, Test, and Development Commands
-No build system is configured yet. When adding one, expose a minimal, consistent command set and document it here. Recommended defaults:
+No build system is configured yet. Current working commands:
 
-- `make dev` or `npm run dev` for local development
-- `make test` or `npm test` for the full test suite
-- `make lint` or `npm run lint` for static checks
-- `make format` or `npm run format` for code formatting
+- `python3 -m venv .venv` to create the local virtual environment
+- `source .venv/bin/activate` to activate it on Linux/macOS
+- `pip install -r requirements.txt` to install runtime dependencies
+- `python3 yt_asr_summary.py --help` to inspect CLI options
+- `python3 yt_asr_summary.py "<youtube-url>"` to analyze a YouTube video
+- `python3 yt_asr_summary.py --media-file /path/to/file.mp4` to analyze a local media file
 
 If you introduce a different toolchain, keep command names conventional and update this file in the same change.
 

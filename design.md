@@ -128,6 +128,11 @@ youtube-video-summary/
 ├─ README.md
 ├─ requirements.txt
 ├─ yt_asr_summary.py
+├─ src/
+│  └─ youtubesummary/
+│     ├─ __init__.py
+│     ├─ cli.py
+│     └─ pipeline.py
 └─ downloads/
    ├─ media/
    ├─ reports/
@@ -153,13 +158,27 @@ openai
 
 ## 8. 核心脚本说明
 
-建议主脚本文件名：
+当前入口与模块拆分：
 
 ```text
 yt_asr_summary.py
+src/youtubesummary/cli.py
+src/youtubesummary/pipeline.py
 ```
 
 职责拆分如下：
+
+### `yt_asr_summary.py`
+
+* 顶层兼容入口
+* 保留 `python3 yt_asr_summary.py ...` 的现有调用方式
+* 实际逻辑委托给 `src/youtubesummary/cli.py`
+
+### `src/youtubesummary/cli.py`
+
+* 解析命令行参数
+* 串联下载、转写、摘要、落盘流程
+* 负责终端输出与退出码
 
 ### `download_media(url)`
 
@@ -376,13 +395,13 @@ Local file:
 
 ## 14. 当前推荐结论
 
-**先做单文件 PoC，先跑通再扩展。**
+**先做可运行原型，再逐步按 `src/` 结构工程化。**
 
 当前最优先执行顺序：
 
 1. 建立虚拟环境
 2. 安装 `yt-dlp`、`faster-whisper`、`openai`
-3. 编写 `yt_asr_summary.py`
+3. 编写 CLI 入口与 `src/` 下核心模块
 4. 用 1~2 个无字幕 YouTube 视频做验证
 5. 观察下载、转写、摘要三个阶段是否都成功
 
@@ -394,7 +413,10 @@ Local file:
 
 当前工作区已实现：
 
+* `README.md`
 * `yt_asr_summary.py`
+* `src/youtubesummary/cli.py`
+* `src/youtubesummary/pipeline.py`
 * `requirements.txt`
 * `.venv` Python 虚拟环境
 * `faster-whisper-small` 本地缓存
