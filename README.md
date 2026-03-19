@@ -25,8 +25,37 @@ python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -U pip
 pip install -r requirements.txt
+```
+
+## OpenAI API Key 配置
+
+摘要阶段依赖 OpenAI Responses API，因此运行前必须配置 `OPENAI_API_KEY`。
+
+当前终端临时生效：
+
+```bash
 export OPENAI_API_KEY="你的 OpenAI API Key"
 ```
+
+如果希望每次打开 shell 自动可用，可以写入 `~/.bashrc`：
+
+```bash
+echo 'export OPENAI_API_KEY="你的 OpenAI API Key"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+检查变量是否已生效：
+
+```bash
+echo "$OPENAI_API_KEY"
+```
+
+使用约束：
+
+- 不要把 API Key 写入代码、`README.md`、`design.md` 或 Git 提交
+- 不要把 API Key 作为命令行参数传入脚本
+- 如果怀疑泄漏，应立即在 OpenAI 平台轮换该 Key
+- 若账户额度不足，摘要阶段会返回 `429 insufficient_quota`
 
 确认依赖：
 
