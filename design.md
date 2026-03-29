@@ -65,6 +65,16 @@
 * 数据库存储
 * 多视频任务调度
 
+补充说明：
+
+* 当前仓库还在并行验证一个独立的 YouTube 直播抓流与转写 demo，详细设计见 `docs/live-capture-demo-design.md`
+* 直播 demo 中，转写成功后的 chunk 会额外记录 `segment_count`、`char_count`、`transcript_status`
+* 其中 `transcript_status = empty / low_content` 的 chunk 默认不进入后续摘要窗口，只保留在状态表和 transcript 中用于排障与质量统计
+* 直播 demo 的窗口构建按所有 `processed` chunk 推进时间轴，但窗口正文只消费 `summary_eligible = true` 的 chunk 文本
+* 直播 demo 当前已进入“增量摘要链路”验证阶段：`state + transcript -> window -> summary_state.json -> summary.md`
+* 直播 demo 现采用单次 `run_dir` 目录模型：`downloads/live/{timestamp}_{video_id}/`，同一次直播的抓流、状态、转写、窗口和摘要产物都写入该目录
+* 直播 demo 的 `stamp` 只允许在入口脚本创建一次，后续目录和文件组织只能复用该时间基准，禁止在子函数中再次生成
+
 ---
 
 ## 4. 环境准备

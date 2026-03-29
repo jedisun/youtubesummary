@@ -1,4 +1,5 @@
 # Repository Guidelines
+For all tasks, first check whether using spawn_agent
 Always respond in Chinese-simplified
 Any changes at the design level must be synchronized to the design documentation.
 
