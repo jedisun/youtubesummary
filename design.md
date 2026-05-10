@@ -43,6 +43,7 @@
 * 本地执行：媒体下载、音频处理、本地 ASR 转写、文件写入
 * 云端执行：使用 OpenAI Responses API 生成中文摘要
 * 当前默认推理配置：`faster-whisper small + cpu + int8`
+* 当前默认摘要模型：`gpt-5.4-mini`
 
 ---
 
@@ -98,9 +99,16 @@ setx OPENAI_API_KEY "你的key"
 密钥要求：
 
 * `OPENAI_API_KEY` 是摘要阶段调用 OpenAI Responses API 的必需凭证
+* 当前代码将 `base_url` 固定为 `https://api.supertoken.cc/v1`
 * 仅通过环境变量读取，不写入脚本、文档、日志或版本库
 * 错误输出只提示“缺少 API Key”，不打印 Key 内容
 * 若账户 quota 不足，摘要阶段会返回 `429 insufficient_quota`
+
+当前代码行为：
+
+* `OPENAI_API_KEY` 必填
+* `base_url` 固定为 `https://api.supertoken.cc/v1`
+* 摘要阶段会用 `OpenAI(base_url="https://api.supertoken.cc/v1")` 初始化客户端
 
 ---
 
@@ -246,7 +254,7 @@ python yt_asr_summary.py "https://www.youtube.com/watch?v=xxxxxxxxxxx" \
   --model-name small \
   --device cpu \
   --compute-type int8 \
-  --summary-model gpt-5-mini
+  --summary-model gpt-5.4-mini
 ```
 
 指定 GPU 参数：
@@ -256,7 +264,13 @@ python yt_asr_summary.py "https://www.youtube.com/watch?v=xxxxxxxxxxx" \
   --model-name distil-large-v3 \
   --device cuda \
   --compute-type float16 \
-  --summary-model gpt-5-mini
+  --summary-model gpt-5.4-mini
+
+补充：
+
+* CLI 已支持 `--summary-model`
+* 若不显式传入，默认使用 `gpt-5.4-mini`
+* 若网关支持其他模型，可在命令行直接覆盖
 ```
 
 当前 Linux 环境建议显式使用：

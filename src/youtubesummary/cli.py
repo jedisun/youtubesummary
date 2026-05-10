@@ -23,7 +23,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--device", default="cpu", help="Whisper device, e.g. cpu or cuda")
     parser.add_argument("--compute-type", default="int8", help="Whisper compute type")
     parser.add_argument("--language", default=None, help="Optional language hint for transcription")
-    parser.add_argument("--summary-model", default="gpt-5-mini", help="OpenAI model for summaries")
+    parser.add_argument(
+        "--summary-model",
+        default="gpt-5.4-mini",
+        help="OpenAI model for summaries, defaults to gpt-5.4-mini",
+    )
     parser.add_argument("--time-window-seconds", type=int, default=180, help="Time window size for timeline summaries")
     parser.add_argument("--max-windows", type=int, default=0, help="Limit processed windows, 0 means no limit")
     parser.add_argument("--output-file", default=None, help="Optional path for summary report output")

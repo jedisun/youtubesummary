@@ -27,9 +27,14 @@ python -m pip install -U pip
 pip install -r requirements.txt
 ```
 
-## OpenAI API Key 配置
+## OpenAI 配置
 
-摘要阶段依赖 OpenAI Responses API，因此运行前必须配置 `OPENAI_API_KEY`。
+摘要阶段依赖 OpenAI Responses API。
+当前程序要求通过环境变量提供 `OPENAI_API_KEY`，并在代码中固定使用以下 `base_url`：
+
+```text
+https://api.supertoken.cc/v1
+```
 
 当前终端临时生效：
 
@@ -50,12 +55,24 @@ source ~/.bashrc
 echo "$OPENAI_API_KEY"
 ```
 
+说明：
+
+- `OPENAI_API_KEY`：摘要阶段必填
+- `base_url`：固定为 `https://api.supertoken.cc/v1`
+- 当前不需要再设置 `OPENAI_BASE_URL`
+
 使用约束：
 
 - 不要把 API Key 写入代码、`README.md`、`design.md` 或 Git 提交
 - 不要把 API Key 作为命令行参数传入脚本
 - 如果怀疑泄漏，应立即在 OpenAI 平台轮换该 Key
 - 若账户额度不足，摘要阶段会返回 `429 insufficient_quota`
+
+推荐示例：
+
+```bash
+export OPENAI_API_KEY="sk-..."
+```
 
 确认依赖：
 
@@ -97,6 +114,18 @@ python3 yt_asr_summary.py "https://www.youtube.com/watch?v=j2q07GuDG_Y" \
 - 下载、转写、摘要分阶段耗时
 - `input_tokens`、`output_tokens`、`total_tokens`
 - 按时间段组织的主题、内容摘要、重要观点
+
+摘要模型说明：
+
+- 当前默认摘要模型是 `gpt-5.4-mini`
+- 可以通过 `--summary-model` 覆盖默认值
+
+示例：
+
+```bash
+python3 yt_asr_summary.py "https://www.youtube.com/watch?v=j2q07GuDG_Y" \
+  --summary-model gpt-5.4-mini
+```
 
 ## 当前限制
 

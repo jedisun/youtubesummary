@@ -17,6 +17,9 @@ from faster_whisper import WhisperModel
 from openai import OpenAI
 
 
+DEFAULT_OPENAI_BASE_URL = "https://api.supertoken.cc/v1"
+
+
 WINDOW_PROMPT = """你是一个中文视频内容整理助手。
 请基于用户提供的某一时间段转写内容，输出以下格式。不要因为追求简洁而省略重要观点、关键数字、价位、条件、判断或结论：
 
@@ -55,6 +58,16 @@ def ensure_api_key() -> None:
 
     if not os.getenv("OPENAI_API_KEY"):
         raise RuntimeError("Missing OPENAI_API_KEY environment variable.")
+
+
+def build_openai_client() -> OpenAI:
+    """按环境变量构造 OpenAI 客户端。
+
+    当前默认把 `base_url` 固定到代码中，`OPENAI_API_KEY` 仍通过环境变量提供。
+    """
+
+    ensure_api_key()
+    return OpenAI(base_url=DEFAULT_OPENAI_BASE_URL)
 
 
 def download_media(url: str, downloads_dir: Path) -> Path:
@@ -207,7 +220,7 @@ def summarize_text(
     以满足长视频复盘时对时间定位和关键观点保留的要求。
     """
 
-    client = OpenAI()
+    client = build_openai_client()
     windows = build_time_windows(segments, time_window_seconds)
     if max_windows > 0:
         windows = windows[:max_windows]
